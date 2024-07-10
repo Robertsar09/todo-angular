@@ -1,0 +1,54 @@
+<div class="container-sm border mt-3 pb-3" style="max-width: 900px">
+  <div class="input-group mt-3 mb-5 col">
+    <label class="control-label mb-1 fs-4" for="add-todo">Add your todo</label>
+    <div class="input-group">
+      <input (keyup.enter)="onAdd()"
+             [(ngModel)]="inputValue"
+             id="add-todo"
+             class="form-control"
+             placeholder="Add todo">
+      <button (click)="onAdd()"
+              class="btn btn-outline-secondary">Add</button>
+    </div>
+  </div>
+  <div>
+    <button (click)="deleteAll()" type="button" class="btn btn-danger">delete all</button>
+  </div>
+  <ul class="list-group">
+
+
+
+    <li *ngFor="let todo of todos; let i = index" class="list-group-item d-flex justify-content-between">
+      <div style="width: 25%">
+          <input #checkbox [(ngModel)]="todo.completed"
+                 class="form-check-input me-1"
+                 type="checkbox"
+                 value=""
+                 id="firstCheckbox">
+        <input #editingInput
+               [ngClass]="{'is-readonly': !todo.isEditing,'is-completed': todo.completed}"
+               (keyup.enter)="onSave(i, editingInput.value)"
+               (keyup.escape)="onCancel(i)"
+               class="border-0"
+               style="width: 75%"
+               [style]="'user-select: none !important;'"
+               [readonly]="!todo.isEditing"
+               [value]="todo.description"/>
+<!--        <label class="form-check-label" for="firstCheckbox">First checkbox</label>-->
+      </div>
+      <div *ngIf="!todo.isEditing" class="w-10" >
+        <i (click)="onEdit(i); editingInput.focus()"
+           class="bi bi-pencil-square d-inline-block me-2"></i>
+        <i class="bi bi-trash"
+           (click)="onDelete(i)"></i>
+      </div>
+      <div *ngIf="todo.isEditing">
+      <i (click)="onSave(i, editingInput.value )"
+
+         class="bi bi-floppy"></i>
+    </div>
+    </li>
+
+  </ul>
+</div>
+
